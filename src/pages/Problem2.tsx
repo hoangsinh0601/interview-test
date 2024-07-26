@@ -1,38 +1,13 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
-import Select from "react-select";
-import styled from "styled-components";
-
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  align-items: center;
-  justify-content: center;
-`;
-
-const Input = styled.input`
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-`;
-
-const Button = styled.button`
-  padding: 10px 20px;
-  background-color: blue;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-`;
+import { Button, Form, Image, Input, Modal, Select } from "antd";
 
 const Problem2 = () => {
   const [tokens, setTokens] = useState<
     { value: string; label: string; image: string; price: number }[]
   >([]);
-  const [fromCurrency, setFromCurrency] = useState("");
-  const [toCurrency, setToCurrency] = useState("");
-  const [amount, setAmount] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
+  const [form] = Form.useForm();
 
   const fetchTokens = async () => {
     try {
@@ -68,36 +43,102 @@ const Problem2 = () => {
     fetchTokens();
   }, []);
 
-  const handleSubmit = (e: { preventDefault: () => void }) => {
-    e.preventDefault();
-    console.log("fromCurrency", fromCurrency);
-    console.log("toCurrency", toCurrency);
+  const handleClose = () => {
+    setIsOpen(false);
+  };
 
-    alert(`Swapped ${amount} ${fromCurrency} to ${toCurrency}`);
+  const handleSubmit = (values: {
+    fromCurrency: string;
+    toCurrency: string;
+    amount: string;
+  }) => {
+    alert(
+      `From: ${values.fromCurrency}, To: ${values.toCurrency}, Amount: ${values.amount}`
+    );
+    handleClose();
   };
 
   return (
-    <Form onSubmit={handleSubmit}>
-      <Select
-        options={tokens}
-        onChange={(option) => option?.value && setFromCurrency(option.value)}
-        placeholder="Select from currency"
-      />
-      <Select
-        options={tokens}
-        onChange={(option) => option?.value && setToCurrency(option.value)}
-        placeholder="Select to currency"
-      />
-      <Input
-        type="number"
-        value={amount}
-        onChange={(e: { target: { value: React.SetStateAction<string> } }) =>
-          setAmount(e.target.value)
-        }
-        placeholder="Amount"
-      />
-      <Button type="submit">Swap</Button>
-    </Form>
+    <div>
+      <Button
+        onClick={() => {
+          setIsOpen(true);
+        }}
+      >
+        Open
+      </Button>
+
+      {isOpen && (
+        <Modal open={isOpen} onCancel={handleClose} onOk={() => form.submit()}>
+          <Form form={form} onFinish={handleSubmit} layout="vertical">
+            <Form.Item
+              label="From currency:"
+              name={"fromCurrency"}
+              rules={[
+                {
+                  required: true,
+                  message: `Please select a currency`,
+                },
+              ]}
+            >
+              <Select key={"fromCurrency"}>
+                {tokens?.map((option) => (
+                  <Select.Option key={option.value} value={option.value}>
+                    <div className="flex items-center">
+                      <Image
+                        src={option.image}
+                        alt={option.label}
+                        height={1}
+                        width={1}
+                      />
+                      <div>{option.label}</div>
+                    </div>
+                  </Select.Option>
+                ))}
+              </Select>
+            </Form.Item>
+            <Form.Item
+              label="To currency:"
+              name={"toCurrency"}
+              rules={[
+                {
+                  required: true,
+                  message: `Please select a currency`,
+                },
+              ]}
+            >
+              <Select key={"toCurrency"}>
+                {tokens?.map((option) => (
+                  <Select.Option key={option.value} value={option.value}>
+                    <div className="flex items-center">
+                      <Image
+                        src={option.image}
+                        alt={option.label}
+                        height={1}
+                        width={1}
+                      />
+                      <div>{option.label}</div>
+                    </div>
+                  </Select.Option>
+                ))}
+              </Select>
+            </Form.Item>
+            <Form.Item
+              label="Amount:"
+              name={"amount"}
+              rules={[
+                {
+                  required: true,
+                  message: `Please input amount`,
+                },
+              ]}
+            >
+              <Input key={"amount"} type="number" />
+            </Form.Item>
+          </Form>
+        </Modal>
+      )}
+    </div>
   );
 };
 
