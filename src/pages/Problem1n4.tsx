@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
-const Problem1 = () => {
+const Problem1n4 = () => {
   const [a, setA] = useState(0);
   const [b, setB] = useState(0);
   const [c, setC] = useState(0);
 
-  const sum_to_n_a = function (n: number) {
+  const sum_to_n_a = function (n: number): number {
     let sum = 0;
     for (let i = 1; i <= n; i++) {
       sum += i;
@@ -13,7 +13,7 @@ const Problem1 = () => {
     return sum;
   };
 
-  const sum_to_n_b = function (n: number) {
+  const sum_to_n_b = function (n: number): number {
     let sum = 0;
     let i = 1;
     while (i <= n) {
@@ -23,7 +23,7 @@ const Problem1 = () => {
     return sum;
   };
 
-  const sum_to_n_c = function (n: number) {
+  const sum_to_n_c = function (n: number): number {
     if (n <= 0) {
       return 0;
     }
@@ -82,4 +82,4 @@ const Problem1 = () => {
   );
 };
 
-export default Problem1;
+export default Problem1n4;
