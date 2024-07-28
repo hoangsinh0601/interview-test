@@ -98,38 +98,40 @@ Please submit pull requests for any enhancements or bug fixes.
 ## License
 
 This project is licensed under the MIT License.
-
 Execution Flow Diagram
-plaintext
-Copy code
+
+```
 +------------------+
-| Client |
+|     Client       |
 +--------+---------+
-|
-v
+     |
+     v
 +--------+---------+
-| Load Balancer |
+| Load Balancer   |
 +--------+---------+
-|
-v
+     |
+     v
 +--------+---------+
-| Application |
-| Server |
+| Application     |
+| Server          |
 +--------+---------+
-|
-v
+     |
+     v
 +--------------------+--------------------+
-| |
-v v
+|                    |                    |
+v                    v
 +--------+---------+ +----------+----------+
 | Score Update API | | Score Retrieval API |
-| - Validate Token | | - Fetch Top 10 |
-| - Update Score | | Scores |
+| - Validate Token | | - Fetch Top 10     |
+| - Update Score   | | Scores             |
 +--------+---------+ +----------+----------+
-| |
-v v
+     |                    |
+     v                    v
 +---+-------------+ +-----+-----------+
-| Real-Time Score | | Database |
-| Updates (WebSocket) | | - User Scores |
+| Real-Time Score | | Database        |
+| Updates         | | - User Scores   |
+| (WebSocket)     |                    |
 +------------------+ +-----------------+
+```
+
 This diagram illustrates the execution flow for both retrieving the top 10 scores and updating a user's score. The load balancer distributes the requests to the application server, which then processes the requests accordingly. Score updates are validated and processed, and live updates are pushed to connected clients via WebSocket.
