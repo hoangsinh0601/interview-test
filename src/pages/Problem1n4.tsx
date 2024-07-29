@@ -1,9 +1,9 @@
 import { useState } from "react";
 
 const Problem1n4 = () => {
-  const [a, setA] = useState(0);
-  const [b, setB] = useState(0);
-  const [c, setC] = useState(0);
+  const [a, setA] = useState<number>(0);
+  const [b, setB] = useState<number>(0);
+  const [c, setC] = useState<number>(0);
 
   const sum_to_n_a = function (n: number): number {
     let sum = 0;
